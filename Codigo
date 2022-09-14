@@ -1,0 +1,120 @@
+#define DISPLAY_SIZE 7
+
+#define DISPLAY_A 7
+#define DISPLAY_B 8
+#define DISPLAY_C 9
+#define DISPLAY_D 10
+#define DISPLAY_E 11
+#define DISPLAY_F 12
+#define DISPLAY_G 13
+
+#define DELAY_TIME 1000
+
+#define LAMPARA 4
+#define PULSADOR 5
+
+
+int estadoLed(int pins[], int tam, int tiempo, int estado);
+
+void setup()
+{
+  pinMode(DISPLAY_A, OUTPUT);
+  pinMode(DISPLAY_B, OUTPUT);
+  pinMode(DISPLAY_C, OUTPUT);
+  pinMode(DISPLAY_D, OUTPUT);
+  pinMode(DISPLAY_E, OUTPUT);
+  pinMode(DISPLAY_F, OUTPUT);
+  pinMode(DISPLAY_G, OUTPUT);
+  pinMode(PULSADOR, INPUT);//pulsador
+  pinMode(LAMPARA, OUTPUT);//bombilla
+  
+  Serial.begin(9600);
+}
+
+int zeroDisplay[DISPLAY_SIZE] = {HIGH,HIGH,HIGH,HIGH,HIGH,HIGH,LOW};
+int oneDisplay[DISPLAY_SIZE] = {LOW,HIGH,HIGH,LOW,LOW,LOW,LOW};
+int twoDisplay[DISPLAY_SIZE] = {HIGH,HIGH,LOW,HIGH,HIGH,LOW,HIGH};
+int threeDisplay[DISPLAY_SIZE] = {HIGH,HIGH,HIGH,HIGH,LOW,LOW,HIGH};
+int fourDisplay[DISPLAY_SIZE] = {LOW,HIGH,HIGH,LOW,LOW,HIGH,HIGH};
+int fiveDisplay[DISPLAY_SIZE] = {HIGH,LOW,HIGH,HIGH,LOW,HIGH,HIGH};
+int sixDisplay[DISPLAY_SIZE] = {HIGH,LOW,HIGH,HIGH,HIGH,HIGH,HIGH};
+int sevenDisplay[DISPLAY_SIZE] = {HIGH,HIGH,HIGH,LOW,LOW,LOW,LOW};
+int eightDisplay[DISPLAY_SIZE] = {HIGH,HIGH,HIGH,HIGH,HIGH,HIGH,HIGH};
+int nineDisplay[DISPLAY_SIZE] = {HIGH,HIGH,HIGH,HIGH,LOW,HIGH,HIGH};
+int off[DISPLAY_SIZE] = {LOW,LOW,LOW,LOW,LOW,LOW,LOW};
+
+int i = 0;
+int presiono = 0;
+
+void loop()
+{
+  presiono = digitalRead(PULSADOR);
+  Serial.print("Estado Pulsador: ");
+  Serial.println(presiono);
+  
+  Serial.print("i vale: ");
+  Serial . println(i);
+
+  switch(i)
+  {
+    case 0:
+    display(zeroDisplay);
+    break;
+    case 1:
+    display(oneDisplay);
+    break;
+    case 2:
+    display(twoDisplay);
+    break;
+    case 3:
+    display(threeDisplay);
+    break;
+    case 4:
+    display(fourDisplay);
+    break;
+    case 5:
+    display(fiveDisplay);
+    break;
+    case 6:
+    display(sixDisplay);
+    break;
+    case 7:
+    display(sevenDisplay);
+    break;
+    case 8:
+    display(eightDisplay);
+    break;
+    case 9:
+    display(nineDisplay);
+    break;
+    default:
+    display(off);
+    break;
+  }
+  delay(DELAY_TIME);
+  if(presiono == HIGH)
+  {
+    digitalWrite(LAMPARA,HIGH);
+    i++;
+  }
+  else
+  {
+    digitalWrite(LAMPARA,LOW);
+    i--;
+  }
+  
+  
+  if (i >= 10)
+  {
+    i = 0;
+  }
+}
+
+int display(int displayStates[])
+{
+  	int i;
+	for (i = 0; i < DISPLAY_SIZE; i++)
+    {
+    	digitalWrite(i + DISPLAY_SIZE, displayStates[i]);
+    }
+}
